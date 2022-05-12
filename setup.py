@@ -2,7 +2,7 @@ from setuptools import setup
 import os
 from glob import glob
 
-package_name = 'ucsd_robocar_control2_pkg'
+package_name = 'controller_pkg'
 controller_submodule = str(package_name + "/controller_submodule")
 state_estimate_submodule = str(package_name + "/state_estimate_submodule")
 
@@ -28,10 +28,10 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'lqr_node = ucsd_robocar_control2_pkg.lqr_node:main',
-            'lqg_node = ucsd_robocar_control2_pkg.lqg_node:main',
-            'mpc_node = ucsd_robocar_control2_pkg.mpc_node:main',
-            'pid_node = ucsd_robocar_control2_pkg.pid_node:main'
+            'lqr_node = controller_pkg.lqr_node:main',
+            'lqg_node = controller_pkg.lqg_node:main',
+            'mpc_node = controller_pkg.mpc_node:main',
+            'pid_node = controller_pkg.pid_node:main'
         ],
     },
 )

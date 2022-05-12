@@ -9,7 +9,7 @@ from ament_index_python.packages import get_package_share_directory
 import os
 
 def generate_launch_description():
-    ctrl_pkg = 'ucsd_robocar_control2_pkg'
+    ctrl_pkg = 'controller_pkg'
     joy_teleop_config = os.path.join(
         get_package_share_directory(ctrl_pkg),
         'config',

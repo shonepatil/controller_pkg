@@ -31,7 +31,7 @@ class LqrController(Node):
     def __init__(self):
         super().__init__(NODE_NAME)
         self.QUEUE_SIZE = 10
-        self.data_file = "/home/projects/ros2_ws/src/ucsd_robocar_hub2/ucsd_robocar_control2_pkg/data/test.csv"
+        self.data_file = "/home/projects/ros2_ws/src/controller_pkg/controller_pkg/data/test.csv"
 
         self.df = pd.DataFrame(columns = ['time', 'joy_delta', 'joy_speed', 'lqr_delta', 'lqr_speed'])
          

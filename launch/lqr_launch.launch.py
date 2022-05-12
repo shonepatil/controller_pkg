@@ -11,7 +11,7 @@ import yaml
 
 
 def generate_launch_description():
-    node_package = 'ucsd_robocar_control2_pkg'
+    node_package = 'controller_pkg'
     config_file = 'lqr_config.yaml'
     node_name = 'lqr_node'
 

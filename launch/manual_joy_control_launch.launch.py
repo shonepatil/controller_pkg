@@ -13,7 +13,7 @@ import yaml
 
 def generate_launch_description():
     some_config = 'manual_joy_control_config.yaml'
-    ctrl_pkg ='ucsd_robocar_control2_pkg'
+    ctrl_pkg ='controller_pkg'
     
     ld = LaunchDescription()
     config = os.path.join(
