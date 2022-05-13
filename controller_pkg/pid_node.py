@@ -209,6 +209,7 @@ class PidController(Node):
 
     def controller(self):
         # Get latest measurement
+        self.get_logger().info(f"first val PATH (x): ({self.x_path[0:10]})")
         self.get_latest_measurements()
 
 
