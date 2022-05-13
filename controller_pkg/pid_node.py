@@ -160,6 +160,7 @@ class PidController(Node):
         # self.get_logger().info("Updating CROSS-TRACK-ERROR")
         
         # find 2 closest points in path with car
+        self.get_logger().info(f"list of PATH (x): ({self.x_path})")
         error_x = self.x_path - self.x
         error_y = self.y_path - self.y
         error_mag = np.power(np.power(error_x,2) + np.power(error_y, 2), 0.5)
