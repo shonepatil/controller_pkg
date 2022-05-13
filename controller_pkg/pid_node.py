@@ -84,8 +84,8 @@ class PidController(Node):
         self.x_buffer = 0
         self.y_buffer = 0
 
-        self.x_path = []
-        self.y_path = []
+        self.x_path = np.array([])
+        self.y_path = np.array([])
         self.line_error_threshold = 0.001
 
         self.e_y_buffer = 0
@@ -209,8 +209,6 @@ class PidController(Node):
 
     def controller(self):
         # Get latest measurement
-        self.get_logger().info(f"first val PATH (x): ({self.x_path[0:10]})")
-        self.get_logger().info(f"first val PATH (x): ({type(self.x_path)})")
         self.get_latest_measurements()
 
 
