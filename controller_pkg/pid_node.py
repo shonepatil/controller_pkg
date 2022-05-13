@@ -126,13 +126,13 @@ class PidController(Node):
 
         # car orientation
         # FIXME: confirm coordinate axes
-        quaternion = (odom_data.orientation.x, odom_data.orientation.y, odom_data.orientation.z, odom_data.orientation.w)
-        euler = euler_from_quaternion(quaternion)
-        self.yaw_buffer = euler[2]
+        # quaternion = (odom_data.orientation.x, odom_data.orientation.y, odom_data.orientation.z, odom_data.orientation.w)
+        # euler = euler_from_quaternion(quaternion)
+        # self.yaw_buffer = euler[2]
 
-        # car velocity
-        self.vx_buffer = odom_data.twist.twist.linear.x
-        self.vy_buffer = odom_data.twist.twist.linear.y
+        # # car velocity
+        # self.vx_buffer = odom_data.twist.twist.linear.x
+        # self.vy_buffer = odom_data.twist.twist.linear.y
 
     # def error_measurement(self, error_data):
     #     error_data_check = np.array([error_data.data[0], error_data.data[1], error_data.data[2]])
