@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
-from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy
+from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSDurabilityPolicy
 from std_msgs.msg import Float32MultiArray, MultiArrayDimension, MultiArrayLayout
 from nav_msgs.msg import Path, Odometry
 from ackermann_msgs.msg import AckermannDriveStamped
@@ -40,7 +40,7 @@ class PidController(Node):
 
         # Get Reference Trajectory
         self.path_subscriber = self.create_subscription(Path, PATH_TOPIC_NAME, self.set_path, QoSProfile(reliability=QoSReliabilityPolicy.RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT,
-            durability=QoSHistoryPolicy.RMW_QOS_POLICY_DURABILITY_VOLATILE,
+            durability=QoSDurabilityPolicy.RMW_QOS_POLICY_DURABILITY_VOLATILE,
             depth=1), callback_group=self.path_thread)
         self.path_subscriber
 
