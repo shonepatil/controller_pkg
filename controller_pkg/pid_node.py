@@ -40,7 +40,7 @@ class PidController(Node):
 
         # Get Reference Trajectory
         self.path_subscriber = self.create_subscription(Path, PATH_TOPIC_NAME, self.set_path, QoSProfile(reliability=QoSReliabilityPolicy.RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT,
-            history=QoSHistoryPolicy.RMW_QOS_POLICY_HISTORY_KEEP_LAST,
+            durability=QoSHistoryPolicy.RMW_QOS_POLICY_DURABILITY_VOLATILE,
             depth=1), callback_group=self.path_thread)
         self.path_subscriber
 
