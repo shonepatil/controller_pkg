@@ -38,7 +38,7 @@ class PidController(Node):
         # self.error_subscriber
 
         # Get Reference Trajectory
-        self.path_subscriber = self.create_subscription(Path, PATH_TOPIC_NAME, self.set_path, rclpy.qos.qos_profile_sensor_data, callback_group=self.path_thread)
+        self.path_subscriber = self.create_subscription(Path, PATH_TOPIC_NAME, self.set_path, rclpy.qos.RMW_QOS_POLICY_RELIAILITY_BEST_EFFORT, callback_group=self.path_thread)
         self.path_subscriber
 
         # setting up message structure for vesc-ackermann msg
@@ -160,7 +160,6 @@ class PidController(Node):
         # self.get_logger().info("Updating CROSS-TRACK-ERROR")
         
         # find 2 closest points in path with car
-        self.get_logger().info(f"list of PATH (x): ({self.x_path})")
         error_x = self.x_path - self.x
         error_y = self.y_path - self.y
         error_mag = np.power(np.power(error_x,2) + np.power(error_y, 2), 0.5)
