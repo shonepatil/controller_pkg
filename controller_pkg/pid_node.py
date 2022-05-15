@@ -224,7 +224,7 @@ class PidController(Node):
         self.derivative_error = self.Kd * (self.e_y - self.e_y_1) / self.Ts
         self.integral_error += self.Ki * self.e_y * self.Ts
         self.integral_error = self.clamp(self.integral_error, self.integral_max)
-        delta_raw = self.proportional_error + self.derivative_error + self.integral_error
+        delta_raw = self.proportional_error# + self.derivative_error + self.integral_error
 
         # Throttle gain scheduling (function of error)
         self.inf_throttle = self.min_speed - ((self.min_speed - self.max_speed) / (self.heading_upper_error_threshold - self.heading_lower_error_threshold)) * self.heading_upper_error_threshold
@@ -256,8 +256,7 @@ class PidController(Node):
                 self.drive_cmd.header.stamp = self.current_time
                 self.drive_cmd.header.frame_id = self.frame_id
                 self.drive_cmd.drive.speed = speed
-                # self.drive_cmd.drive.steering_angle = -delta
-                self.drive_cmd.drive.steering_angle = delta
+                self.drive_cmd.drive.steering_angle = -delta
                 self.drive_pub.publish(self.drive_cmd)
 
             except KeyboardInterrupt:
