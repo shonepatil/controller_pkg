@@ -39,7 +39,7 @@ class PidController(Node):
         # self.error_subscriber
 
         # Get Reference Trajectory
-        self.path_subscriber = self.create_subscription(Path, PATH_TOPIC_NAME, self.set_path, QoSProfile(reliability=QoSReliabilityPolicy.RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT, depth=10), callback_group=self.path_thread)
+        self.path_subscriber = self.create_subscription(Path, PATH_TOPIC_NAME, self.set_path, QoSProfile(reliability=QoSReliabilityPolicy.RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT, depth=10))#, callback_group=self.path_thread)
         self.path_subscriber
 
         # setting up message structure for vesc-ackermann msg

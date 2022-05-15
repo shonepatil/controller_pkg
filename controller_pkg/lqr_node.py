@@ -56,7 +56,11 @@ class LqrController(Node):
         self.pose_subscriber
 
         # Get Reference Trajectory
-        self.path_subscriber = self.create_subscription(Path, PATH_TOPIC_NAME, self.set_path, rclpy.qos.qos_profile_sensor_data)#, callback_group=self.path_thread)
+        self.path_subscriber = self.create_subscription(Path, PATH_TOPIC_NAME, self.set_path, rclpy.qos.qos_profile_sensor_data, callback_group=self.path_thread)
+        self.path_subscriber
+
+        # Get Joystick commands
+        self.path_subscriber = self.create_subscription(AckermannDriveStamped, JOY_TOPIC_NAME, self.set_joy_command, self.QUEUE_SIZE, callback_group=self.joy_thread)
         self.path_subscriber
 
         self.start_time = time.time()
