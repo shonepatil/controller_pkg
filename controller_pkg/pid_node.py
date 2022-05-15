@@ -235,6 +235,8 @@ class PidController(Node):
         speed = self.clamp(speed_raw, self.max_speed, self.min_speed)
         
         self.get_logger().info(f'\n'
+                               f'\n x:{self.x}'
+                               f'\n y:{self.y}'
                                f'\n ex:{self.e_x}'
                                f'\n ey:{self.e_y}'
                                f'\n e_theta:{self.e_theta}'
