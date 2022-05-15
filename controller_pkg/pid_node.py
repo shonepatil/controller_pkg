@@ -256,7 +256,8 @@ class PidController(Node):
                 self.drive_cmd.header.stamp = self.current_time
                 self.drive_cmd.header.frame_id = self.frame_id
                 self.drive_cmd.drive.speed = speed
-                self.drive_cmd.drive.steering_angle = -delta
+                # self.drive_cmd.drive.steering_angle = -delta
+                self.drive_cmd.drive.steering_angle = delta
                 self.drive_pub.publish(self.drive_cmd)
 
             except KeyboardInterrupt:
