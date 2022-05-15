@@ -86,8 +86,8 @@ class PidController(Node):
 
         # self.x_path = []
         # self.y_path = []
-        self.x_path = np.array([1.0])
-        self.y_path = np.array([1.0])
+        self.x_path = np.array([1.0, 3.0, 5.0])
+        self.y_path = np.array([1.0, 3.0, 5.0])
         self.line_error_threshold = 0.001
 
         self.e_y_buffer = 0
