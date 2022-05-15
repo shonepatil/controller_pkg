@@ -157,7 +157,7 @@ class PidController(Node):
         # path coordinates (GLOBAL)
         self.x_path = np.array([pose.pose.position.x for pose in path_data.poses])
         self.y_path = np.array([pose.pose.position.x for pose in path_data.poses])
-        self.get_logger().info(f"first val PATH (x): ({self.x_path[0]})")
+        self.get_logger().info(f"first val PATH (x): ({self.x_path[-1]})")
 
     def get_cross_track_error(self):
         # self.get_logger().info("Updating CROSS-TRACK-ERROR")
