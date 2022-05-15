@@ -205,7 +205,8 @@ class PidController(Node):
 
         ecg_x, ecg_y, e_cg, theta_path = self.get_cross_track_error()
 
-        self.e_y_buffer = ecg_y
+        # self.e_y_buffer = ecg_y
+        self.e_y_buffer = e_cg
         self.e_x_buffer = ecg_x
         self.e_theta_buffer = theta_path
 
