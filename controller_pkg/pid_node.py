@@ -198,6 +198,11 @@ class PidController(Node):
         return ecg_x, ecg_y, e_cg, theta_path
 
     def get_latest_measurements(self):
+
+        # car coordinates
+        self.x = self.x_buffer
+        self.y = self.y_buffer
+
         ecg_x, ecg_y, e_cg, theta_path = self.get_cross_track_error()
 
         self.e_y_buffer = ecg_x
