@@ -13,7 +13,7 @@ import numpy as np
 
 NODE_NAME = 'pid_node'
 ERROR_TOPIC_NAME = '/error'
-ACTUATOR_TOPIC_NAME = '/teleop'
+ACTUATOR_TOPIC_NAME = '/drive'
 
 PATH_TOPIC_NAME = '/global_trajectory'
 ODOM_TOPIC_NAME = '/ego_racecar/odom'
