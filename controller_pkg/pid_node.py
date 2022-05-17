@@ -176,6 +176,7 @@ class PidController(Node):
         Px2 = self.x_path[error_mag2_index]
         Py1 = self.y_path[error_mag1_index]
         Py2 = self.y_path[error_mag2_index]
+        self.get_logger().info(f"{Px1},{Py1}")
         
         # create line extrapolations to determine cross-track error
         # (threshold added to account for zero/infinite slopes)
