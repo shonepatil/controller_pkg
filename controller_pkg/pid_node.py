@@ -50,7 +50,7 @@ class PidController(Node):
         self.declare_parameters(
             namespace='',
             parameters=[
-                ('Kp_steering', 1),
+                ('Kp_steering', 0),
                 ('Ki_steering', 0),
                 ('Kd_steering', 0),
                 ('integral_max', 0),
