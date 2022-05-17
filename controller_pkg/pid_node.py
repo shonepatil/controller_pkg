@@ -195,6 +195,10 @@ class PidController(Node):
         e_cg_sign = np.sign(car_slope)
         e_cg = float(e_cg_sign * ecg_r)
         self.get_logger().info(f"{e_cg},{theta_path}")
+
+        ecg_x = e_cg * np.sin(theta_path)
+        ecg_y = e_cg * np.cos(theta_path)
+
         return ecg_x, ecg_y, e_cg, theta_path
 
     def get_latest_measurements(self):
