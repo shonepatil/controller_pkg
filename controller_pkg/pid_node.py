@@ -169,6 +169,7 @@ class PidController(Node):
         error_y = self.y_path - self.y
         error_mag = np.power(np.power(error_x,2) + np.power(error_y, 2), 0.5)
         error_mag1, error_mag2 = np.partition(error_mag, 1)[0:2]
+        self.get_logger().info(f"{error_mag1},{error_mag1}")
         error_mag1_index = np.argwhere(error_mag == error_mag1)[0][0]
         error_mag2_index = np.argwhere(error_mag == error_mag2)[0][0]
         Px1 = self.x_path[error_mag1_index]
@@ -255,29 +256,29 @@ class PidController(Node):
 
         # Publish values to VESC
 
-        if self.e_cg < self.long_upper_error_threshold:
-            # Publish values
-            try:
-                # publish drive control signal
-                self.drive_cmd.header.stamp = self.current_time
-                self.drive_cmd.header.frame_id = self.frame_id
-                self.drive_cmd.drive.speed = speed
-                self.drive_cmd.drive.steering_angle = -delta
-                self.drive_pub.publish(self.drive_cmd)
+        # if self.e_cg < self.long_upper_error_threshold:
+        #     # Publish values
+        #     try:
+        #         # publish drive control signal
+        #         self.drive_cmd.header.stamp = self.current_time
+        #         self.drive_cmd.header.frame_id = self.frame_id
+        #         self.drive_cmd.drive.speed = speed
+        #         self.drive_cmd.drive.steering_angle = -delta
+        #         self.drive_pub.publish(self.drive_cmd)
 
-            except KeyboardInterrupt:
-                self.drive_cmd.header.stamp = self.current_time
-                self.drive_cmd.header.frame_id = self.frame_id
-                self.drive_cmd.drive.speed = 0
-                self.drive_cmd.drive.steering_angle = 0
-                self.drive_pub.publish(self.drive_cmd)
-        else:
-            # publish drive control signal
-            self.drive_cmd.header.stamp = self.current_time
-            self.drive_cmd.header.frame_id = self.frame_id
-            self.drive_cmd.drive.speed = self.zero_speed
-            self.drive_cmd.drive.steering_angle = 0.0
-            self.drive_pub.publish(self.drive_cmd)
+        #     except KeyboardInterrupt:
+        #         self.drive_cmd.header.stamp = self.current_time
+        #         self.drive_cmd.header.frame_id = self.frame_id
+        #         self.drive_cmd.drive.speed = 0
+        #         self.drive_cmd.drive.steering_angle = 0
+        #         self.drive_pub.publish(self.drive_cmd)
+        # else:
+        #     # publish drive control signal
+        #     self.drive_cmd.header.stamp = self.current_time
+        #     self.drive_cmd.header.frame_id = self.frame_id
+        #     self.drive_cmd.drive.speed = self.zero_speed
+        #     self.drive_cmd.drive.steering_angle = 0.0
+        #     self.drive_pub.publish(self.drive_cmd)
 
     def clamp(self, value, upper_bound, lower_bound=None):
         if lower_bound==None:
