@@ -92,10 +92,12 @@ class PidController(Node):
 
         self.e_y_buffer = 0
         self.e_x_buffer = 0
+        self.e_cg_buffer = 0
         self.e_theta_buffer = 0
         self.e_y = 0
         self.e_y_1 = 0
         self.e_x = 0
+        self.e_cg = 0
         self.e_theta = 0
 
         self.proportional_error = 0 # proportional error term for steering
@@ -196,9 +198,6 @@ class PidController(Node):
         e_cg = float(e_cg_sign * ecg_r)
         self.get_logger().info(f"{e_cg},{theta_path}")
 
-        ecg_x = e_cg * np.sin(theta_path)
-        ecg_y = e_cg * np.cos(theta_path)
-
         return ecg_x, ecg_y, e_cg, theta_path
 
     def get_latest_measurements(self):
@@ -211,10 +210,12 @@ class PidController(Node):
 
         self.e_y_buffer = ecg_y
         self.e_x_buffer = ecg_x
+        self.e_cg_buffer = e_cg
         self.e_theta_buffer = theta_path
 
         self.e_y = self.e_y_buffer
         self.e_x = self.e_x_buffer
+        self.e_cg = self.e_cg_buffer
         self.e_theta = self.e_theta_buffer
         self.current_time = self.get_clock().now().to_msg()
 
@@ -224,9 +225,9 @@ class PidController(Node):
 
 
         # Steering PID terms
-        self.proportional_error = self.Kp * self.e_y
-        self.derivative_error = self.Kd * (self.e_y - self.e_y_1) / self.Ts
-        self.integral_error += self.Ki * self.e_y * self.Ts
+        self.proportional_error = self.Kp * self.e_cg
+        self.derivative_error = self.Kd * (self.e_cg - self.e_y_1) / self.Ts
+        self.integral_error += self.Ki * self.e_cg * self.Ts
         self.integral_error = self.clamp(self.integral_error, self.integral_max)
         delta_raw = self.proportional_error# + self.derivative_error + self.integral_error
 
@@ -243,17 +244,18 @@ class PidController(Node):
                                f'\n y:{self.y}'
                                f'\n ex:{self.e_x}'
                                f'\n ey:{self.e_y}'
+                               f'\n ecg:{self.e_cg}'
                                f'\n e_theta:{self.e_theta}'
                                f'\n delta:{delta_raw}'
                                f'\n speed:{speed_raw}'
                                f'\n clamped delta:{delta}'
                                f'\n clamped speed:{speed}'
                                )
-        self.e_y_1 = self.e_y
+        self.e_y_1 = self.e_cg
 
         # Publish values to VESC
 
-        if self.e_x < self.long_upper_error_threshold:
+        if self.e_cg < self.long_upper_error_threshold:
             # Publish values
             try:
                 # publish drive control signal
