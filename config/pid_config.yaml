@@ -1,6 +1,6 @@
 pid_node: 
   ros__parameters: 
-    Kp_steering : 0.8
+    Kp_steering : 0.3
     Ki_steering : 1.0E-3 
     Kd_steering : 1.0E-3
     integral_max: 1.0E-1
