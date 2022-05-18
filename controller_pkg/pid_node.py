@@ -195,7 +195,6 @@ class PidController(Node):
         car_intercept = self.y - car_slope * self.x
         ecg_x = (path_intercept - car_intercept) / (car_slope - path_slope)
         ecg_y = car_slope * ecg_x + car_intercept
-        self.get_logger().info(f"{ecg_x},{ecg_y}")
 
         # get actual cross-track error distance and use sign of slope to determine direction
         ecg_r = np.power(np.power((self.x - ecg_x),2) + np.power((self.y - ecg_y), 2), 0.5)
