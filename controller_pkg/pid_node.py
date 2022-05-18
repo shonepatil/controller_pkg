@@ -269,29 +269,29 @@ class PidController(Node):
 
             # Publish values to VESC
 
-            # if self.e_cg < self.long_upper_error_threshold:
-            #     # Publish values
-            #     try:
-            #         # publish drive control signal
-            #         self.drive_cmd.header.stamp = self.current_time
-            #         self.drive_cmd.header.frame_id = self.frame_id
-            #         self.drive_cmd.drive.speed = speed
-            #         self.drive_cmd.drive.steering_angle = -delta
-            #         self.drive_pub.publish(self.drive_cmd)
+            if self.e_cg < self.long_upper_error_threshold:
+                # Publish values
+                try:
+                    # publish drive control signal
+                    self.drive_cmd.header.stamp = self.current_time
+                    self.drive_cmd.header.frame_id = self.frame_id
+                    self.drive_cmd.drive.speed = speed
+                    self.drive_cmd.drive.steering_angle = -delta
+                    self.drive_pub.publish(self.drive_cmd)
 
-            #     except KeyboardInterrupt:
-            #         self.drive_cmd.header.stamp = self.current_time
-            #         self.drive_cmd.header.frame_id = self.frame_id
-            #         self.drive_cmd.drive.speed = 0
-            #         self.drive_cmd.drive.steering_angle = 0
-            #         self.drive_pub.publish(self.drive_cmd)
-            # else:
-            #     # publish drive control signal
-            #     self.drive_cmd.header.stamp = self.current_time
-            #     self.drive_cmd.header.frame_id = self.frame_id
-            #     self.drive_cmd.drive.speed = self.zero_speed
-            #     self.drive_cmd.drive.steering_angle = 0.0
-            #     self.drive_pub.publish(self.drive_cmd)
+                except KeyboardInterrupt:
+                    self.drive_cmd.header.stamp = self.current_time
+                    self.drive_cmd.header.frame_id = self.frame_id
+                    self.drive_cmd.drive.speed = 0
+                    self.drive_cmd.drive.steering_angle = 0
+                    self.drive_pub.publish(self.drive_cmd)
+            else:
+                # publish drive control signal
+                self.drive_cmd.header.stamp = self.current_time
+                self.drive_cmd.header.frame_id = self.frame_id
+                self.drive_cmd.drive.speed = self.zero_speed
+                self.drive_cmd.drive.steering_angle = 0.0
+                self.drive_pub.publish(self.drive_cmd)
 
     def clamp(self, value, upper_bound, lower_bound=None):
         if lower_bound==None:
