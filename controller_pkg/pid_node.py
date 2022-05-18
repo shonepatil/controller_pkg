@@ -122,6 +122,8 @@ class PidController(Node):
         self.Ts = 0.01  # contoller sample time
         self.create_timer(self.Ts, self.controller)
 
+        self.sub_working = False
+
     def odom_measurement(self, odom_data):
         # TODO: what is frequency of data coming in?
 
@@ -170,14 +172,12 @@ class PidController(Node):
         error_mag = np.power(np.power(error_x,2) + np.power(error_y, 2), 0.5)
         error_mag1, error_mag2 = np.partition(error_mag, 1)[0:2]
         self.get_logger().info(f"{len(self.x_path)}")
-        self.get_logger().info(f"{error_mag1},{error_mag1}")
         error_mag1_index = np.argwhere(error_mag == error_mag1)[0][0]
         error_mag2_index = np.argwhere(error_mag == error_mag2)[0][0]
         Px1 = self.x_path[error_mag1_index]
         Px2 = self.x_path[error_mag2_index]
         Py1 = self.y_path[error_mag1_index]
         Py2 = self.y_path[error_mag2_index]
-        self.get_logger().info(f"{Px1},{Py1}")
         
         # create line extrapolations to determine cross-track error
         # (threshold added to account for zero/infinite slopes)
@@ -225,7 +225,11 @@ class PidController(Node):
     def controller(self):
         # Get latest measurement
         self.get_latest_measurements()
-
+        if len(self.x_path) > 3:
+            self.sub_working = True
+            self.get_logger().info(f'\n'
+                               f'\n time to start sub:{self.Ts}')
+            self.x_Kp = None
 
         # Steering PID terms
         self.proportional_error = self.Kp * self.e_cg
