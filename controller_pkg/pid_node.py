@@ -224,69 +224,74 @@ class PidController(Node):
         self.current_time = self.get_clock().now().to_msg()
 
     def controller(self):
-        # Get latest measurement
-        self.get_latest_measurements()
-        if len(self.x_path) > 3:
-            self.sub_working = True
-            res = time.perf_counter()
-            self.get_logger().info(f'\n'
-                               f'\n time to start sub:{res - self.clock}')
-            return
-
-        # Steering PID terms
-        self.proportional_error = self.Kp * self.e_cg
-        self.derivative_error = self.Kd * (self.e_cg - self.e_y_1) / self.Ts
-        self.integral_error += self.Ki * self.e_cg * self.Ts
-        self.integral_error = self.clamp(self.integral_error, self.integral_max)
-        delta_raw = self.proportional_error# + self.derivative_error + self.integral_error
-
-        # Throttle gain scheduling (function of error)
-        self.inf_throttle = self.min_speed - ((self.min_speed - self.max_speed) / (self.heading_upper_error_threshold - self.heading_lower_error_threshold)) * self.heading_upper_error_threshold
-        speed_raw = ((self.min_speed - self.max_speed) / (self.heading_upper_error_threshold - self.heading_lower_error_threshold)) * abs(self.e_theta) + self.inf_throttle
-
-        # clamp values
-        delta = self.clamp(delta_raw, self.max_right_steering, self.max_left_steering)
-        speed = self.clamp(speed_raw, self.max_speed, self.min_speed)
         
-        self.get_logger().info(f'\n'
-                               f'\n x:{self.x}'
-                               f'\n y:{self.y}'
-                               f'\n ex:{self.e_x}'
-                               f'\n ey:{self.e_y}'
-                               f'\n ecg:{self.e_cg}'
-                               f'\n e_theta:{self.e_theta}'
-                               f'\n delta:{delta_raw}'
-                               f'\n speed:{speed_raw}'
-                               f'\n clamped delta:{delta}'
-                               f'\n clamped speed:{speed}'
-                               )
-        self.e_y_1 = self.e_cg
+        # Wait for subscriber to start up
+        if len(self.x_path) < 4:
+            self.get_logger().info(f'\n Waiting for path subscriber to start')
+        else:
+            if not self.sub_working:
+                res = time.perf_counter()
+                self.get_logger().info(f'\n'
+                                f'\n time to start sub:{res - self.clock}')
+                self.sub_working = True
 
-        # Publish values to VESC
+            # Get latest measurement
+            self.get_latest_measurements()
 
-        # if self.e_cg < self.long_upper_error_threshold:
-        #     # Publish values
-        #     try:
-        #         # publish drive control signal
-        #         self.drive_cmd.header.stamp = self.current_time
-        #         self.drive_cmd.header.frame_id = self.frame_id
-        #         self.drive_cmd.drive.speed = speed
-        #         self.drive_cmd.drive.steering_angle = -delta
-        #         self.drive_pub.publish(self.drive_cmd)
+            # Steering PID terms
+            self.proportional_error = self.Kp * self.e_cg
+            self.derivative_error = self.Kd * (self.e_cg - self.e_y_1) / self.Ts
+            self.integral_error += self.Ki * self.e_cg * self.Ts
+            self.integral_error = self.clamp(self.integral_error, self.integral_max)
+            delta_raw = self.proportional_error# + self.derivative_error + self.integral_error
 
-        #     except KeyboardInterrupt:
-        #         self.drive_cmd.header.stamp = self.current_time
-        #         self.drive_cmd.header.frame_id = self.frame_id
-        #         self.drive_cmd.drive.speed = 0
-        #         self.drive_cmd.drive.steering_angle = 0
-        #         self.drive_pub.publish(self.drive_cmd)
-        # else:
-        #     # publish drive control signal
-        #     self.drive_cmd.header.stamp = self.current_time
-        #     self.drive_cmd.header.frame_id = self.frame_id
-        #     self.drive_cmd.drive.speed = self.zero_speed
-        #     self.drive_cmd.drive.steering_angle = 0.0
-        #     self.drive_pub.publish(self.drive_cmd)
+            # Throttle gain scheduling (function of error)
+            self.inf_throttle = self.min_speed - ((self.min_speed - self.max_speed) / (self.heading_upper_error_threshold - self.heading_lower_error_threshold)) * self.heading_upper_error_threshold
+            speed_raw = ((self.min_speed - self.max_speed) / (self.heading_upper_error_threshold - self.heading_lower_error_threshold)) * abs(self.e_theta) + self.inf_throttle
+
+            # clamp values
+            delta = self.clamp(delta_raw, self.max_right_steering, self.max_left_steering)
+            speed = self.clamp(speed_raw, self.max_speed, self.min_speed)
+            
+            self.get_logger().info(f'\n'
+                                f'\n x:{self.x}'
+                                f'\n y:{self.y}'
+                                f'\n ex:{self.e_x}'
+                                f'\n ey:{self.e_y}'
+                                f'\n ecg:{self.e_cg}'
+                                f'\n e_theta:{self.e_theta}'
+                                f'\n delta:{delta_raw}'
+                                f'\n speed:{speed_raw}'
+                                f'\n clamped delta:{delta}'
+                                f'\n clamped speed:{speed}'
+                                )
+            self.e_y_1 = self.e_cg
+
+            # Publish values to VESC
+
+            # if self.e_cg < self.long_upper_error_threshold:
+            #     # Publish values
+            #     try:
+            #         # publish drive control signal
+            #         self.drive_cmd.header.stamp = self.current_time
+            #         self.drive_cmd.header.frame_id = self.frame_id
+            #         self.drive_cmd.drive.speed = speed
+            #         self.drive_cmd.drive.steering_angle = -delta
+            #         self.drive_pub.publish(self.drive_cmd)
+
+            #     except KeyboardInterrupt:
+            #         self.drive_cmd.header.stamp = self.current_time
+            #         self.drive_cmd.header.frame_id = self.frame_id
+            #         self.drive_cmd.drive.speed = 0
+            #         self.drive_cmd.drive.steering_angle = 0
+            #         self.drive_pub.publish(self.drive_cmd)
+            # else:
+            #     # publish drive control signal
+            #     self.drive_cmd.header.stamp = self.current_time
+            #     self.drive_cmd.header.frame_id = self.frame_id
+            #     self.drive_cmd.drive.speed = self.zero_speed
+            #     self.drive_cmd.drive.steering_angle = 0.0
+            #     self.drive_pub.publish(self.drive_cmd)
 
     def clamp(self, value, upper_bound, lower_bound=None):
         if lower_bound==None:
