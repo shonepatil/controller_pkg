@@ -177,8 +177,10 @@ class PidController(Node):
         error_mag2_index = np.argwhere(error_mag == error_mag2)[0][0]
         Px1 = self.x_path[error_mag1_index]
         Px2 = self.x_path[error_mag2_index]
-        Py1 = self.y_path[error_mag1_index]
-        Py2 = self.y_path[error_mag2_index]
+        # Py1 = self.y_path[error_mag1_index]
+        # Py2 = self.y_path[error_mag2_index]
+        Py1 = 0
+        Py2 = 0
         self.get_logger().info(f"{Px1},{Py1},{Px2},{Py2}")
         
         # create line extrapolations to determine cross-track error
