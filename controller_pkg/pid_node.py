@@ -122,6 +122,7 @@ class PidController(Node):
         self.Ts = 0.01  # contoller sample time
         self.create_timer(self.Ts, self.controller)
 
+        self.clock = time.perf_counter()
         self.sub_working = False
 
     def odom_measurement(self, odom_data):
@@ -227,9 +228,10 @@ class PidController(Node):
         self.get_latest_measurements()
         if len(self.x_path) > 3:
             self.sub_working = True
+            res = time.perf_counter()
             self.get_logger().info(f'\n'
-                               f'\n time to start sub:{self.Ts}')
-            self.x_Kp = None
+                               f'\n time to start sub:{res - self.clock}')
+            return
 
         # Steering PID terms
         self.proportional_error = self.Kp * self.e_cg
