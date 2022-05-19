@@ -31,7 +31,7 @@ class PidController(Node):
         self.drive_cmd = AckermannDriveStamped()
 
         # Get Odometry measurements
-        self.odom_subscriber = self.create_subscription(Odometry, ODOM_TOPIC_NAME, self.odom_measurement, 50, callback_group=self.odom_thread)
+        self.odom_subscriber = self.create_subscription(Odometry, ODOM_TOPIC_NAME, self.odom_measurement, 10, callback_group=self.odom_thread)
         self.odom_subscriber
 
         # # Error subscriber
@@ -281,7 +281,8 @@ class PidController(Node):
                     self.drive_cmd.header.stamp = self.current_time
                     self.drive_cmd.header.frame_id = self.frame_id
                     self.drive_cmd.drive.speed = speed
-                    self.drive_cmd.drive.steering_angle = -delta
+                    # self.drive_cmd.drive.steering_angle = -delta
+                    self.drive_cmd.drive.steering_angle = delta
                     self.drive_pub.publish(self.drive_cmd)
 
                 except KeyboardInterrupt:
