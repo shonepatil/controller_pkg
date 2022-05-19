@@ -180,7 +180,8 @@ class PidController(Node):
         Py1 = self.y_path[error_mag1_index]
         Py2 = self.y_path[error_mag2_index]
 
-        self.get_logger().info(f"{Px1},{Py1},{Px2},{Py2}")
+        self.get_logger().info(f"Car pos: {self.x},{self.y}")
+        self.get_logger().info(f"Point 1: {Px1},{Py1} \nPoint 2: {Px2},{Py2}")
         
         # create line extrapolations to determine cross-track error
         # (threshold added to account for zero/infinite slopes)
