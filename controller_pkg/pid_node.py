@@ -161,7 +161,7 @@ class PidController(Node):
 
         # path coordinates (GLOBAL)
         self.x_path = np.array([pose.pose.position.x for pose in path_data.poses])
-        self.y_path = np.array([pose.pose.position.x for pose in path_data.poses])
+        self.y_path = np.array([pose.pose.position.y for pose in path_data.poses])
         self.get_logger().info(f"first val PATH (x): ({self.x_path[-1]})")
 
     def get_cross_track_error(self):
@@ -181,7 +181,7 @@ class PidController(Node):
         Py2 = self.y_path[error_mag2_index]
 
         self.get_logger().info(f"Car pos: {self.x},{self.y}")
-        self.get_logger().info(f"Car pos: {self.x_path[:5]},{self.y_path[:5]}")
+        self.get_logger().info(f"Path data: {self.x_path[:5]},{self.y_path[:5]}")
         self.get_logger().info(f"Err Mag index: {error_mag1_index},{error_mag2_index}")
         self.get_logger().info(f"Point 1: {Px1},{Py1} \nPoint 2: {Px2},{Py2}")
         
