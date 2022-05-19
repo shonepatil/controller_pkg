@@ -31,7 +31,7 @@ class PidController(Node):
         self.drive_cmd = AckermannDriveStamped()
 
         # Get Odometry measurements
-        self.odom_subscriber = self.create_subscription(Odometry, ODOM_TOPIC_NAME, self.odom_measurement, 10, callback_group=self.odom_thread)
+        self.odom_subscriber = self.create_subscription(Odometry, ODOM_TOPIC_NAME, self.odom_measurement, 50, callback_group=self.odom_thread)
         self.odom_subscriber
 
         # # Error subscriber
@@ -39,7 +39,7 @@ class PidController(Node):
         # self.error_subscriber
 
         # Get Reference Trajectory
-        self.path_subscriber = self.create_subscription(Path, PATH_TOPIC_NAME, self.set_path, QoSProfile(reliability=QoSReliabilityPolicy.RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT, depth=100), callback_group=self.path_thread)
+        self.path_subscriber = self.create_subscription(Path, PATH_TOPIC_NAME, self.set_path, QoSProfile(reliability=QoSReliabilityPolicy.RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT, depth=50), callback_group=self.path_thread)
         self.path_subscriber
 
         # setting up message structure for vesc-ackermann msg
