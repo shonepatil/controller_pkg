@@ -181,6 +181,7 @@ class PidController(Node):
         Py2 = self.y_path[error_mag2_index]
 
         self.get_logger().info(f"Car pos: {self.x},{self.y}")
+        self.get_logger().info(f"Car pos: {self.x_path[:5]},{self.y_path[:5]}")
         self.get_logger().info(f"Err Mag index: {error_mag1_index},{error_mag2_index}")
         self.get_logger().info(f"Point 1: {Px1},{Py1} \nPoint 2: {Px2},{Py2}")
         
