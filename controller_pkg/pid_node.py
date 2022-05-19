@@ -39,7 +39,7 @@ class PidController(Node):
         # self.error_subscriber
 
         # Get Reference Trajectory
-        self.path_subscriber = self.create_subscription(Path, PATH_TOPIC_NAME, self.set_path, QoSProfile(reliability=QoSReliabilityPolicy.RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT, depth=10), callback_group=self.path_thread)
+        self.path_subscriber = self.create_subscription(Path, PATH_TOPIC_NAME, self.set_path, QoSProfile(reliability=QoSReliabilityPolicy.RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT, depth=50), callback_group=self.path_thread)
         self.path_subscriber
 
         # setting up message structure for vesc-ackermann msg
@@ -177,10 +177,9 @@ class PidController(Node):
         error_mag2_index = np.argwhere(error_mag == error_mag2)[0][0]
         Px1 = self.x_path[error_mag1_index]
         Px2 = self.x_path[error_mag2_index]
-        # Py1 = self.y_path[error_mag1_index]
-        # Py2 = self.y_path[error_mag2_index]
-        Py1 = 0
-        Py2 = 0
+        Py1 = self.y_path[error_mag1_index]
+        Py2 = self.y_path[error_mag2_index]
+
         self.get_logger().info(f"{Px1},{Py1},{Px2},{Py2}")
         
         # create line extrapolations to determine cross-track error
@@ -213,8 +212,7 @@ class PidController(Node):
         self.x = self.x_buffer
         self.y = self.y_buffer
 
-        # ecg_x, ecg_y, e_cg, theta_path = self.get_cross_track_error()
-        ecg_x, ecg_y, e_cg, theta_path = 0, 0, 0, 0
+        ecg_x, ecg_y, e_cg, theta_path = self.get_cross_track_error()
 
         self.e_y_buffer = ecg_y
         self.e_x_buffer = ecg_x
