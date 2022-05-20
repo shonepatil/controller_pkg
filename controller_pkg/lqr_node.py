@@ -235,10 +235,10 @@ class LqrController(Node):
         Py1 = self.y_path[error_mag1_index]
         Py2 = self.y_path[error_mag2_index]
 
-        self.get_logger().info(f"Car pos: {self.x},{self.y}")
-        self.get_logger().info(f"Path data: {self.x_path[:5]},{self.y_path[:5]}")
-        self.get_logger().info(f"Err Mag index: {error_mag1_index},{error_mag2_index}")
-        self.get_logger().info(f"Point 1: {Px1},{Py1} \nPoint 2: {Px2},{Py2}")
+        # self.get_logger().info(f"Car pos: {self.x},{self.y}")
+        # self.get_logger().info(f"Path data: {self.x_path[:5]},{self.y_path[:5]}")
+        # self.get_logger().info(f"Err Mag index: {error_mag1_index},{error_mag2_index}")
+        # self.get_logger().info(f"Point 1: {Px1},{Py1} \nPoint 2: {Px2},{Py2}")
         
         # create line extrapolations to determine cross-track error
         # (threshold added to account for zero/infinite slopes)
@@ -342,6 +342,19 @@ class LqrController(Node):
             # Clamp control inputs
             delta = self.clamp(self.delta_raw, self.max_right_steering, self.max_left_steering)
             speed = self.clamp(speed_raw, self.max_speed, self.min_speed)
+
+            self.get_logger().info(f'\n'
+                                f'\n x:{self.x}'
+                                f'\n y:{self.y}'
+                                f'\n ex:{self.e_x}'
+                                f'\n ey:{self.e_y}'
+                                f'\n ecg:{self.e_cg}'
+                                f'\n e_theta:{self.e_theta}'
+                                f'\n delta:{self.delta_raw}'
+                                f'\n speed:{self.speed_raw}'
+                                f'\n clamped delta:{delta}'
+                                f'\n clamped speed:{speed}'
+                                )
 
             # Publish values
             self.current_time
