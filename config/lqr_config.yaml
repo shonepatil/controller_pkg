@@ -9,8 +9,8 @@ lqr_node:
     k3_coeff: [1.0, 1.0, 1.0]
     k4_coeff: [1.0, 1.0, 1.0]
     zero_speed  : 0.0
-    max_speed : 2.0 
-    min_speed : 0.363 
+    max_speed : 0.3 
+    min_speed : 0.2 
     error_threshold : 0.16 
     max_right_steering : 0.4 
     max_left_steering : -0.4

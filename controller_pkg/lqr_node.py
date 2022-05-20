@@ -20,7 +20,7 @@ import time
 NODE_NAME = 'lqr_node'
 # ACTUATOR_TOPIC_NAME = '/vesc/high_level/ackermann_cmd_mux/output'
 ACTUATOR_TOPIC_NAME = '/drive'
-JOY_TOPIC_NAME = '/teleop'
+# JOY_TOPIC_NAME = '/teleop'
 
 PATH_TOPIC_NAME = '/global_trajectory'
 ODOM_TOPIC_NAME = '/ego_racecar/odom'
@@ -64,8 +64,8 @@ class LqrController(Node):
         # self.path_subscriber
 
         # Get Joystick commands
-        self.path_subscriber = self.create_subscription(AckermannDriveStamped, JOY_TOPIC_NAME, self.set_joy_command, self.QUEUE_SIZE, callback_group=self.joy_thread)
-        self.path_subscriber
+        # self.path_subscriber = self.create_subscription(AckermannDriveStamped, JOY_TOPIC_NAME, self.set_joy_command, self.QUEUE_SIZE, callback_group=self.joy_thread)
+        # self.path_subscriber
 
         self.start_time = time.time()
         self.current_time = self.get_clock().now().to_msg()
@@ -272,13 +272,13 @@ class LqrController(Node):
         self.y = self.y_buffer
 
         # car speed
-        # self.vx = self.vx_buffer
+        self.vx = self.vx_buffer
         self.vy = self.vy_buffer
 
         # manual control
-        self.vx = self.joy_speed_buffer
-        self.joy_speed = self.joy_speed_buffer 
-        self.joy_steering = self.joy_steering_buffer
+        # self.vx = self.joy_speed_buffer
+        # self.joy_speed = self.joy_speed_buffer 
+        # self.joy_steering = self.joy_steering_buffer
 
         # time
         self.current_time = self.get_clock().now().to_msg()
