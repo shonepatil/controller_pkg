@@ -97,8 +97,10 @@ class LqrController(Node):
         self.sys = self.car_model.build_error_model(self.vx)
 
         # Path coordinates
-        self.x_path = []
-        self.y_path = []
+        # self.x_path = []
+        # self.y_path = []
+        self.x_path = np.array([1.0, 3.0, 5.0])
+        self.y_path = np.array([1.0, 3.0, 5.0])
         self.yaw_path = []
         self.line_error_threshold = 0.001 # (m)
 
@@ -317,47 +319,52 @@ class LqrController(Node):
         -speed (m/s)
         """
 
-        # Update Car model LTV system --- A(Vx)
-        self.get_latest_measurements()
-        self.sys = self.car_model.build_error_model(self.vx)
+        # Wait for subscriber to start up
+        if len(self.x_path) < 4:
+            self.get_logger().info(f'\n Waiting for path subscriber to start')
+        else:
 
-        # get updated gains
-        K = self.update_gains()
+            # Update Car model LTV system --- A(Vx)
+            self.get_latest_measurements()
+            self.sys = self.car_model.build_error_model(self.vx)
 
-        # Steering LQR
-        self.delta_raw = -np.dot(K[0], self.state_measurement).flat[0]
+            # get updated gains
+            K = self.update_gains()
 
-        # Throttle gain scheduling
-        tracking_error = self.state_measurement[0][0]
-        self.inf_throttle = self.min_speed - (self.min_speed - self.max_speed) / (1 - self.error_threshold)
-        speed_raw = ((self.min_speed - self.max_speed) / (1 - self.error_threshold)) * abs(tracking_error) + self.inf_throttle
+            # Steering LQR
+            self.delta_raw = -np.dot(K[0], self.state_measurement).flat[0]
 
-        # Clamp control inputs
-        delta = self.clamp(self.delta_raw, self.max_right_steering, self.max_left_steering)
-        speed = self.clamp(speed_raw, self.max_speed, self.min_speed)
+            # Throttle gain scheduling
+            tracking_error = self.state_measurement[0][0]
+            self.inf_throttle = self.min_speed - (self.min_speed - self.max_speed) / (1 - self.error_threshold)
+            speed_raw = ((self.min_speed - self.max_speed) / (1 - self.error_threshold)) * abs(tracking_error) + self.inf_throttle
 
-        # Publish values
-        self.current_time
-        try:
-            # publish drive control signal
-            self.drive_cmd.header.stamp = self.current_time
-            self.drive_cmd.header.frame_id = 'base_link'
-            self.drive_cmd.drive.speed = speed
-            self.drive_cmd.drive.steering_angle = delta
-            self.drive_pub.publish(self.drive_cmd)
+            # Clamp control inputs
+            delta = self.clamp(self.delta_raw, self.max_right_steering, self.max_left_steering)
+            speed = self.clamp(speed_raw, self.max_speed, self.min_speed)
 
-        except KeyboardInterrupt:
-            self.drive_cmd.header.stamp = self.current_time
-            self.drive_cmd.header.frame_id = 'base_link'
-            self.drive_cmd.drive.speed = 0
-            self.drive_cmd.drive.steering_angle = 0
-            self.drive_pub.publish(self.drive_cmd)
+            # Publish values
+            self.current_time
+            try:
+                # publish drive control signal
+                self.drive_cmd.header.stamp = self.current_time
+                self.drive_cmd.header.frame_id = 'base_link'
+                self.drive_cmd.drive.speed = speed
+                self.drive_cmd.drive.steering_angle = delta
+                self.drive_pub.publish(self.drive_cmd)
 
-        # Update States
-        self.update_states()
+            except KeyboardInterrupt:
+                self.drive_cmd.header.stamp = self.current_time
+                self.drive_cmd.header.frame_id = 'base_link'
+                self.drive_cmd.drive.speed = 0
+                self.drive_cmd.drive.steering_angle = 0
+                self.drive_pub.publish(self.drive_cmd)
 
-        # write out
-        self.compare_manual_and_lqr()
+            # Update States
+            self.update_states()
+
+            # write out
+            self.compare_manual_and_lqr()
         
 
     def compare_manual_and_lqr(self):
