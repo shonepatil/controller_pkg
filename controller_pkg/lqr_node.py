@@ -19,7 +19,7 @@ import time
 
 NODE_NAME = 'lqr_node'
 # ACTUATOR_TOPIC_NAME = '/vesc/high_level/ackermann_cmd_mux/output'
-ACTUATOR_TOPIC_NAME = '/lqr_controller_test'
+ACTUATOR_TOPIC_NAME = '/drive'
 JOY_TOPIC_NAME = '/teleop'
 
 PATH_TOPIC_NAME = '/global_trajectory'
