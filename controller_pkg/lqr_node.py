@@ -22,10 +22,10 @@ NODE_NAME = 'lqr_node'
 ACTUATOR_TOPIC_NAME = '/lqr_controller_test'
 JOY_TOPIC_NAME = '/teleop'
 
-# PATH_TOPIC_NAME = '/global_trajectory'
-# ODOM_TOPIC_NAME = '/odom'
-POSE_TOPIC_NAME = '/slam_out_pose'
-PATH_TOPIC_NAME = '/trajectory'
+PATH_TOPIC_NAME = '/global_trajectory'
+ODOM_TOPIC_NAME = '/ego_racecar/odom'
+# POSE_TOPIC_NAME = '/slam_out_pose'
+# PATH_TOPIC_NAME = '/trajectory'
 
 class LqrController(Node):
     def __init__(self):
@@ -47,17 +47,21 @@ class LqrController(Node):
         
         ### Get sensor measurements ###
 
-        # # Get Odometry measurements
-        # self.odom_subscriber = self.create_subscription(Odometry, ODOM_TOPIC_NAME, self.odom_measurement, 10, callback_group=self.odom_thread)
-        # self.odom_subscriber
+        # Get Odometry measurements
+        self.odom_subscriber = self.create_subscription(Odometry, ODOM_TOPIC_NAME, self.odom_measurement, 10, callback_group=self.odom_thread)
+        self.odom_subscriber
 
-        # Get GPS/Lidar measurements
-        self.pose_subscriber = self.create_subscription(PoseStamped, POSE_TOPIC_NAME, self.pose_measurement, self.QUEUE_SIZE, callback_group=self.pose_thread)
-        self.pose_subscriber
+        # # Get GPS/Lidar measurements
+        # self.pose_subscriber = self.create_subscription(PoseStamped, POSE_TOPIC_NAME, self.pose_measurement, self.QUEUE_SIZE, callback_group=self.pose_thread)
+        # self.pose_subscriber
 
         # Get Reference Trajectory
         self.path_subscriber = self.create_subscription(Path, PATH_TOPIC_NAME, self.set_path, rclpy.qos.qos_profile_sensor_data, callback_group=self.path_thread)
         self.path_subscriber
+
+        # # Get Reference Trajectory
+        # self.path_subscriber = self.create_subscription(Path, PATH_TOPIC_NAME, self.set_path, QoSProfile(reliability=QoSReliabilityPolicy.RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT, depth=50), callback_group=self.path_thread)
+        # self.path_subscriber
 
         # Get Joystick commands
         self.path_subscriber = self.create_subscription(AckermannDriveStamped, JOY_TOPIC_NAME, self.set_joy_command, self.QUEUE_SIZE, callback_group=self.joy_thread)
@@ -207,7 +211,7 @@ class LqrController(Node):
 
         # path coordinates (GLOBAL)
         self.x_path = np.array([pose.pose.position.x for pose in path_data.poses])
-        self.y_path = np.array([pose.pose.position.x for pose in path_data.poses])
+        self.y_path = np.array([pose.pose.position.y for pose in path_data.poses])
         self.get_logger().info(f"first val PATH (x): ({self.x_path[0]})")
 
     def set_joy_command(self, joy_data):

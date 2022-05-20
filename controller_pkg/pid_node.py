@@ -39,7 +39,10 @@ class PidController(Node):
         # self.error_subscriber
 
         # Get Reference Trajectory
-        self.path_subscriber = self.create_subscription(Path, PATH_TOPIC_NAME, self.set_path, QoSProfile(reliability=QoSReliabilityPolicy.RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT, depth=50), callback_group=self.path_thread)
+        # self.path_subscriber = self.create_subscription(Path, PATH_TOPIC_NAME, self.set_path, QoSProfile(reliability=QoSReliabilityPolicy.RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT, depth=50), callback_group=self.path_thread)
+        # self.path_subscriber
+
+        self.path_subscriber = self.create_subscription(Path, PATH_TOPIC_NAME, self.set_path, rclpy.qos.qos_profile_sensor_data, callback_group=self.path_thread)
         self.path_subscriber
 
         # setting up message structure for vesc-ackermann msg
@@ -248,7 +251,7 @@ class PidController(Node):
             self.derivative_error = self.Kd * (self.e_cg - self.e_y_1) / self.Ts
             self.integral_error += self.Ki * self.e_cg * self.Ts
             self.integral_error = self.clamp(self.integral_error, self.integral_max)
-            delta_raw = self.proportional_error + self.derivative_error + self.integral_error
+            delta_raw = self.proportional_error# + self.derivative_error + self.integral_error
 
             # Throttle gain scheduling (function of error)
             self.inf_throttle = self.min_speed - ((self.min_speed - self.max_speed) / (self.heading_upper_error_threshold - self.heading_lower_error_threshold)) * self.heading_upper_error_threshold
