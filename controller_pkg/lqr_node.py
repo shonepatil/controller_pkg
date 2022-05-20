@@ -177,7 +177,7 @@ class LqrController(Node):
 
         # car orientation
         # FIXME: confirm coordinate axes
-        quaternion = (odom_data.orientation.x, odom_data.orientation.y, odom_data.orientation.z, odom_data.orientation.w)
+        quaternion = (odom_data.pose.pose.orientation.x, odom_data.pose.pose.orientation.y, odom_data.pose.pose.orientation.z, odom_data.pose.pose.orientation.w)
         euler = euler_from_quaternion(quaternion)
         self.yaw_buffer = euler[2]
 
