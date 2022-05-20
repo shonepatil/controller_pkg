@@ -37,8 +37,8 @@ class LqrController(Node):
          
         # self.controller_thread = MutuallyExclusiveCallbackGroup()
         self.path_thread = MutuallyExclusiveCallbackGroup()
-        # self.odom_thread = MutuallyExclusiveCallbackGroup()
-        self.pose_thread = MutuallyExclusiveCallbackGroup()
+        self.odom_thread = MutuallyExclusiveCallbackGroup()
+        # self.pose_thread = MutuallyExclusiveCallbackGroup()
         self.joy_thread = MutuallyExclusiveCallbackGroup()
 
         # Actuator control
