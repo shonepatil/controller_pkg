@@ -351,7 +351,7 @@ class LqrController(Node):
                                 f'\n ecg:{self.ecg}'
                                 f'\n theta_e:{self.theta_e}'
                                 f'\n delta:{self.delta_raw}'
-                                f'\n speed:{self.speed_raw}'
+                                f'\n speed:{speed_raw}'
                                 f'\n clamped delta:{delta}'
                                 f'\n clamped speed:{speed}'
                                 )
