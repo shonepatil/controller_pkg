@@ -261,7 +261,7 @@ class LqrController(Node):
         e_cg_sign = np.sign(car_slope)
         e_cg = float(e_cg_sign * ecg_r)
         self.ecg = e_cg
-        self.e_theta = theta_path
+        self.theta_e = theta_path
         self.get_logger().info(f"{e_cg},{theta_path}")
         return e_cg, theta_path
 
@@ -354,24 +354,25 @@ class LqrController(Node):
                                 f'\n speed:{speed_raw}'
                                 f'\n clamped delta:{delta}'
                                 f'\n clamped speed:{speed}'
+                                f'\n yaw:{self.yaw}'
                                 )
 
             # Publish values
-            self.current_time
-            try:
-                # publish drive control signal
-                self.drive_cmd.header.stamp = self.current_time
-                self.drive_cmd.header.frame_id = 'base_link'
-                self.drive_cmd.drive.speed = speed
-                self.drive_cmd.drive.steering_angle = -delta
-                self.drive_pub.publish(self.drive_cmd)
+            # self.current_time
+            # try:
+            #     # publish drive control signal
+            #     self.drive_cmd.header.stamp = self.current_time
+            #     self.drive_cmd.header.frame_id = 'base_link'
+            #     self.drive_cmd.drive.speed = speed
+            #     self.drive_cmd.drive.steering_angle = delta
+            #     self.drive_pub.publish(self.drive_cmd)
 
-            except KeyboardInterrupt:
-                self.drive_cmd.header.stamp = self.current_time
-                self.drive_cmd.header.frame_id = 'base_link'
-                self.drive_cmd.drive.speed = 0
-                self.drive_cmd.drive.steering_angle = 0
-                self.drive_pub.publish(self.drive_cmd)
+            # except KeyboardInterrupt:
+            #     self.drive_cmd.header.stamp = self.current_time
+            #     self.drive_cmd.header.frame_id = 'base_link'
+            #     self.drive_cmd.drive.speed = 0
+            #     self.drive_cmd.drive.steering_angle = 0
+            #     self.drive_pub.publish(self.drive_cmd)
 
             # Update States
             self.update_states()
