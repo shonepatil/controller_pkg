@@ -260,6 +260,8 @@ class LqrController(Node):
         ecg_r = np.power(np.power((self.x - ecg_x),2) + np.power((self.y - ecg_y), 2), 0.5)
         e_cg_sign = np.sign(car_slope)
         e_cg = float(e_cg_sign * ecg_r)
+        self.ecg = e_cg
+        self.e_theta = theta_path
         self.get_logger().info(f"{e_cg},{theta_path}")
         return e_cg, theta_path
 
@@ -347,7 +349,7 @@ class LqrController(Node):
                                 f'\n x:{self.x}'
                                 f'\n y:{self.y}'
                                 f'\n ecg:{self.e_cg}'
-                                f'\n e_theta:{self.e_theta}'
+                                f'\n theta_e:{self.theta_e}'
                                 f'\n delta:{self.delta_raw}'
                                 f'\n speed:{self.speed_raw}'
                                 f'\n clamped delta:{delta}'
