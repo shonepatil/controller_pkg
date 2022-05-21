@@ -348,7 +348,7 @@ class LqrController(Node):
             self.get_logger().info(f'\n'
                                 f'\n x:{self.x}'
                                 f'\n y:{self.y}'
-                                f'\n ecg:{self.e_cg}'
+                                f'\n ecg:{self.ecg}'
                                 f'\n theta_e:{self.theta_e}'
                                 f'\n delta:{self.delta_raw}'
                                 f'\n speed:{self.speed_raw}'
