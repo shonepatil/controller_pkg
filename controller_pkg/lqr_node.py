@@ -238,7 +238,7 @@ class LqrController(Node):
         # self.get_logger().info(f"Car pos: {self.x},{self.y}")
         # self.get_logger().info(f"Path data: {self.x_path[:5]},{self.y_path[:5]}")
         # self.get_logger().info(f"Err Mag index: {error_mag1_index},{error_mag2_index}")
-        self.get_logger().info(f"Point 1: {Px1},{Py1} \nPoint 2: {Px2},{Py2}")
+        # self.get_logger().info(f"Point 1: {Px1},{Py1} \nPoint 2: {Px2},{Py2}")
         
         # create line extrapolations to determine cross-track error
         # (threshold added to account for zero/infinite slopes)
@@ -358,21 +358,21 @@ class LqrController(Node):
                                 )
 
             # Publish values
-            # self.current_time
-            # try:
-            #     # publish drive control signal
-            #     self.drive_cmd.header.stamp = self.current_time
-            #     self.drive_cmd.header.frame_id = 'base_link'
-            #     self.drive_cmd.drive.speed = speed
-            #     self.drive_cmd.drive.steering_angle = delta
-            #     self.drive_pub.publish(self.drive_cmd)
+            self.current_time
+            try:
+                # publish drive control signal
+                self.drive_cmd.header.stamp = self.current_time
+                self.drive_cmd.header.frame_id = 'base_link'
+                self.drive_cmd.drive.speed = speed
+                self.drive_cmd.drive.steering_angle = delta
+                self.drive_pub.publish(self.drive_cmd)
 
-            # except KeyboardInterrupt:
-            #     self.drive_cmd.header.stamp = self.current_time
-            #     self.drive_cmd.header.frame_id = 'base_link'
-            #     self.drive_cmd.drive.speed = 0
-            #     self.drive_cmd.drive.steering_angle = 0
-            #     self.drive_pub.publish(self.drive_cmd)
+            except KeyboardInterrupt:
+                self.drive_cmd.header.stamp = self.current_time
+                self.drive_cmd.header.frame_id = 'base_link'
+                self.drive_cmd.drive.speed = 0
+                self.drive_cmd.drive.steering_angle = 0
+                self.drive_pub.publish(self.drive_cmd)
 
             # Update States
             self.update_states()
