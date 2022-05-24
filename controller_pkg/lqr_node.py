@@ -263,7 +263,7 @@ class LqrController(Node):
         self.ecg = e_cg
         self.theta_e = theta_path
         self.get_logger().info(f"{e_cg},{theta_path}")
-        return e_cg, theta_path
+        return e_cg, theta_path - math.pi
 
     def get_latest_measurements(self):
         # car orientation
