@@ -263,7 +263,7 @@ class LqrController(Node):
         self.ecg = e_cg
         self.theta_e = theta_path
         self.get_logger().info(f"{e_cg},{theta_path}")
-        return e_cg, theta_path - math.pi
+        return e_cg, theta_path
 
     def get_latest_measurements(self):
         # car orientation
@@ -358,21 +358,21 @@ class LqrController(Node):
                                 )
 
             # Publish values
-            self.current_time
-            try:
-                # publish drive control signal
-                self.drive_cmd.header.stamp = self.current_time
-                self.drive_cmd.header.frame_id = 'base_link'
-                self.drive_cmd.drive.speed = speed
-                self.drive_cmd.drive.steering_angle = delta
-                self.drive_pub.publish(self.drive_cmd)
+            # self.current_time
+            # try:
+            #     # publish drive control signal
+            #     self.drive_cmd.header.stamp = self.current_time
+            #     self.drive_cmd.header.frame_id = 'base_link'
+            #     self.drive_cmd.drive.speed = speed
+            #     self.drive_cmd.drive.steering_angle = delta
+            #     self.drive_pub.publish(self.drive_cmd)
 
-            except KeyboardInterrupt:
-                self.drive_cmd.header.stamp = self.current_time
-                self.drive_cmd.header.frame_id = 'base_link'
-                self.drive_cmd.drive.speed = 0
-                self.drive_cmd.drive.steering_angle = 0
-                self.drive_pub.publish(self.drive_cmd)
+            # except KeyboardInterrupt:
+            #     self.drive_cmd.header.stamp = self.current_time
+            #     self.drive_cmd.header.frame_id = 'base_link'
+            #     self.drive_cmd.drive.speed = 0
+            #     self.drive_cmd.drive.steering_angle = 0
+            #     self.drive_pub.publish(self.drive_cmd)
 
             # Update States
             self.update_states()
