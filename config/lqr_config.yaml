@@ -1,8 +1,8 @@
 lqr_node: 
   ros__parameters:
-    k1_gain: 2.0
+    k1_gain: 1.0
     k2_gain: 1.0
-    k3_gain: 2.0
+    k3_gain: 1.0
     k4_gain: 1.0
     k1_coeff: [1.0, 1.0, 1.0]
     k2_coeff: [1.0, 1.0, 1.0]
