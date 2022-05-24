@@ -107,6 +107,7 @@ class LqrController(Node):
         # Calculated states
         self.ecg = 0  # cross-track error
         self.theta_e = 0  # heading error
+        self.theta_e_k = 0
         self.theta_e_dot = 0  # heading error yaw_rate
         self.delta_raw = 0
 
@@ -294,11 +295,11 @@ class LqrController(Node):
         # self.get_logger().info("Updating STATES")
         theta_e_km1 = self.state_measurement[2][0]
         e_cg, theta_path = self.get_cross_track_error()
-        theta_e_k = theta_path - self.yaw
+        self.theta_e_k = theta_path - self.yaw
         self.state_measurement[0][0] = e_cg
-        self.state_measurement[1][0] = self.vy + self.vx * math.sin(theta_e_k)
-        self.state_measurement[2][0] = theta_e_k
-        self.state_measurement[3][0] = (theta_e_k - theta_e_km1) / self.Ts
+        self.state_measurement[1][0] = self.vy + self.vx * math.sin(self.theta_e_k)
+        self.state_measurement[2][0] = self.theta_e_k
+        self.state_measurement[3][0] = (self.theta_e_k - theta_e_km1) / self.Ts
         self.get_logger().info(f"states: {self.state_measurement}")
 
     def controller(self):
@@ -356,6 +357,7 @@ class LqrController(Node):
                                 f'\n clamped delta:{delta}'
                                 f'\n clamped speed:{speed}'
                                 f'\n yaw:{self.yaw}'
+                                f'\n heading error:{self.theta_e_k}'
                                 )
 
             # Publish values
