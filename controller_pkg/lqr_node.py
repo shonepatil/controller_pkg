@@ -363,20 +363,20 @@ class LqrController(Node):
 
             # Publish values
             self.current_time
-            # try:
-            #     # publish drive control signal
-            #     self.drive_cmd.header.stamp = self.current_time
-            #     self.drive_cmd.header.frame_id = 'base_link'
-            #     self.drive_cmd.drive.speed = speed
-            #     self.drive_cmd.drive.steering_angle = delta
-            #     self.drive_pub.publish(self.drive_cmd)
+            try:
+                # publish drive control signal
+                self.drive_cmd.header.stamp = self.current_time
+                self.drive_cmd.header.frame_id = 'base_link'
+                self.drive_cmd.drive.speed = speed
+                self.drive_cmd.drive.steering_angle = 0.4#delta
+                self.drive_pub.publish(self.drive_cmd)
 
-            # except KeyboardInterrupt:
-            #     self.drive_cmd.header.stamp = self.current_time
-            #     self.drive_cmd.header.frame_id = 'base_link'
-            #     self.drive_cmd.drive.speed = 0
-            #     self.drive_cmd.drive.steering_angle = 0
-            #     self.drive_pub.publish(self.drive_cmd)
+            except KeyboardInterrupt:
+                self.drive_cmd.header.stamp = self.current_time
+                self.drive_cmd.header.frame_id = 'base_link'
+                self.drive_cmd.drive.speed = 0
+                self.drive_cmd.drive.steering_angle = 0
+                self.drive_pub.publish(self.drive_cmd)
 
             # Update States
             self.update_states()
