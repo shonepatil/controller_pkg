@@ -137,9 +137,9 @@ class PidController(Node):
 
         # car orientation
         # FIXME: confirm coordinate axes
-        # quaternion = (odom_data.orientation.x, odom_data.orientation.y, odom_data.orientation.z, odom_data.orientation.w)
-        # euler = euler_from_quaternion(quaternion)
-        # self.yaw_buffer = euler[2]
+        quaternion = (odom_data.pose.pose.orientation.x, odom_data.pose.pose.orientation.y, odom_data.pose.pose.orientation.z, odom_data.pose.pose.orientation.w)
+        euler = euler_from_quaternion(quaternion)
+        self.yaw_buffer = euler[2]
 
         # # car velocity
         # self.vx_buffer = odom_data.twist.twist.linear.x
@@ -206,13 +206,29 @@ class PidController(Node):
 
         # get actual cross-track error distance and use sign of slope to determine direction
         ecg_r = np.power(np.power((self.x - ecg_x),2) + np.power((self.y - ecg_y), 2), 0.5)
-        e_cg_sign = np.sign(car_slope)
+
+        # Use cross product to determine the side
+        if error_mag1_index > error_mag2_index:
+            forward = np.array([Px1, Py1])
+            back = np.array([Px2, Py2])
+        else:
+            forward = np.array([Px2, Py2])
+            back = np.array([Px1, Py1])
+        car_vec = np.array([self.x, self.y])
+        cross_product = np.cross(forward - back, car_vec - back)
+        self.get_logger().info("Cross product: {}".format(cross_product))
+        e_cg_sign = -np.sign(cross_product) # get the sign of z component
+
+        # e_cg_sign = np.sign(car_slope)
+        #e_cg_sign = np.sign(theta_path - self.yaw) * (-1.0)
         e_cg = float(e_cg_sign * ecg_r)
-        self.get_logger().info(f"{e_cg},{theta_path}")
+        self.get_logger().info(f"e_cg: {e_cg}, theta_path: {theta_path}")
 
         return ecg_x, ecg_y, e_cg, theta_path
 
     def get_latest_measurements(self):
+        # car orientation
+        # self.yaw = self.yaw_buffer
 
         # car coordinates
         self.x = self.x_buffer
@@ -258,7 +274,7 @@ class PidController(Node):
             speed_raw = ((self.min_speed - self.max_speed) / (self.heading_upper_error_threshold - self.heading_lower_error_threshold)) * abs(self.e_theta) + self.inf_throttle
 
             # clamp values
-            delta = self.clamp(delta_raw, self.max_right_steering, self.max_left_steering)
+            delta = self.clamp(delta_raw, self.max_left_steering, self.max_right_steering)
             speed = self.clamp(speed_raw, self.max_speed, self.min_speed)
             
             self.get_logger().info(f'\n'
@@ -284,7 +300,7 @@ class PidController(Node):
                     self.drive_cmd.header.stamp = self.current_time
                     self.drive_cmd.header.frame_id = self.frame_id
                     self.drive_cmd.drive.speed = speed
-                    self.drive_cmd.drive.steering_angle = -delta
+                    self.drive_cmd.drive.steering_angle = delta
                     self.drive_pub.publish(self.drive_cmd)
 
                 except KeyboardInterrupt:
