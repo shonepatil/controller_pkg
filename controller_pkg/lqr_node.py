@@ -346,7 +346,7 @@ class LqrController(Node):
             speed_raw = ((self.min_speed - self.max_speed) / (1 - self.error_threshold)) * abs(tracking_error) + self.inf_throttle
 
             # Clamp control inputs
-            delta = self.clamp(self.delta_raw, self.max_right_steering, self.max_left_steering)
+            delta = self.clamp(self.delta_raw, self.max_left_steering, self.max_right_steering)
             speed = self.clamp(speed_raw, self.max_speed, self.min_speed)
 
             self.get_logger().info(f'\n'
