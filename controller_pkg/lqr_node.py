@@ -231,6 +231,8 @@ class LqrController(Node):
         error_mag1, error_mag2 = np.partition(error_mag, 1)[0:2]
         error_mag1_index = np.argwhere(error_mag == error_mag1)[0][0]
         error_mag2_index = np.argwhere(error_mag == error_mag2)[0][0]
+        error_mag1_index = min(error_mag1_index, error_mag2_index)
+        error_mag2_index = max(error_mag1_index, error_mag2_index)
         Px1 = self.x_path[error_mag1_index]
         Px2 = self.x_path[error_mag2_index]
         Py1 = self.y_path[error_mag1_index]
