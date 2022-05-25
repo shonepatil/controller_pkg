@@ -12,6 +12,6 @@ lqr_node:
     max_speed : 0.35 
     min_speed : 0.2 
     error_threshold : 0.16 
-    max_right_steering : 0.4 
-    max_left_steering : -0.4
+    max_right_steering : -0.4 
+    max_left_steering : 0.4
     Ts : 0.01
