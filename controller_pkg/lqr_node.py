@@ -247,8 +247,8 @@ class LqrController(Node):
         # path line
         delta_x = Px2 - Px1 + self.line_error_threshold
         delta_y = Py2 - Py1 + self.line_error_threshold
-        # theta_path = float(np.arctan2(delta_y, delta_x))
-        theta_path = np.arctan(np.tan(float(np.arctan2(delta_y, delta_x))))
+        theta_path = float(np.arctan2(delta_y, delta_x))
+        # if abs(theta_path - self.yaw)
         path_slope = delta_y / delta_x
         path_intercept = Py1 - path_slope * Px1
         
@@ -295,8 +295,7 @@ class LqrController(Node):
         # self.get_logger().info("Updating STATES")
         theta_e_km1 = self.state_measurement[2][0]
         e_cg, theta_path = self.get_cross_track_error()
-        # self.theta_e_k = theta_path - self.yaw
-        self.theta_e_k = -(theta_path - self.yaw)
+        self.theta_e_k = theta_path - self.yaw
         self.state_measurement[0][0] = e_cg
         self.state_measurement[1][0] = self.vy + self.vx * math.sin(self.theta_e_k)
         self.state_measurement[2][0] = self.theta_e_k

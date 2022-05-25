@@ -4,9 +4,9 @@ lqr_node:
     k2_gain: 1.0
     k3_gain: 1.0
     k4_gain: 1.0
-    k1_coeff: [10.0, 10.0, 10.0]
+    k1_coeff: [1.0, 1.0, 1.0]
     k2_coeff: [1.0, 1.0, 1.0]
-    k3_coeff: [10.0, 10.0, 10.0]
+    k3_coeff: [1.0, 1.0, 1.0]
     k4_coeff: [1.0, 1.0, 1.0]
     zero_speed  : 0.0
     max_speed : 0.35 
