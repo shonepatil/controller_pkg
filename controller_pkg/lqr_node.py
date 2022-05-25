@@ -266,8 +266,7 @@ class LqrController(Node):
         self.ecg = e_cg
         self.theta_e = theta_path
         self.get_logger().info(f"{e_cg},{theta_path}")
-        # return e_cg, theta_path
-        return 0, theta_path
+        return e_cg, theta_path
 
     def get_latest_measurements(self):
         # car orientation
@@ -297,11 +296,12 @@ class LqrController(Node):
         # self.get_logger().info("Updating STATES")
         theta_e_km1 = self.state_measurement[2][0]
         e_cg, theta_path = self.get_cross_track_error()
-        self.theta_e_k = theta_path - self.yaw
+        # self.theta_e_k = theta_path - self.yaw
+        self.theta_e_k = -(theta_path - self.yaw)
         self.state_measurement[0][0] = e_cg
-        self.state_measurement[1][0] = self.vy + self.vx * math.sin(self.theta_e_k)
-        self.state_measurement[2][0] = self.theta_e_k
-        self.state_measurement[3][0] = (self.theta_e_k - theta_e_km1) / self.Ts
+        self.state_measurement[1][0] = 0#self.vy + self.vx * math.sin(self.theta_e_k)
+        self.state_measurement[2][0] = 0#self.theta_e_k
+        self.state_measurement[3][0] = 0#(self.theta_e_k - theta_e_km1) / self.Ts
         self.get_logger().info(f"states: {self.state_measurement}")
 
     def controller(self):
