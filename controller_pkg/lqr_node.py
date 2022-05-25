@@ -261,7 +261,8 @@ class LqrController(Node):
 
         # get actual cross-track error distance and use sign of slope to determine direction
         ecg_r = np.power(np.power((self.x - ecg_x),2) + np.power((self.y - ecg_y), 2), 0.5)
-        e_cg_sign = np.sign(car_slope)
+        # e_cg_sign = np.sign(car_slope)
+        e_cg_sign = -np.sign(np.cross(np.array([Px2, Py2]) - np.array([Px1, Py1]), np.array([self.x, self.y]) - np.array([Px1, Py1])))
         e_cg = float(e_cg_sign * ecg_r)
         self.ecg = e_cg
         self.theta_e = theta_path
@@ -364,20 +365,20 @@ class LqrController(Node):
 
             # Publish values
             self.current_time
-            try:
-                # publish drive control signal
-                self.drive_cmd.header.stamp = self.current_time
-                self.drive_cmd.header.frame_id = 'base_link'
-                self.drive_cmd.drive.speed = speed
-                self.drive_cmd.drive.steering_angle = delta
-                self.drive_pub.publish(self.drive_cmd)
+            # try:
+            #     # publish drive control signal
+            #     self.drive_cmd.header.stamp = self.current_time
+            #     self.drive_cmd.header.frame_id = 'base_link'
+            #     self.drive_cmd.drive.speed = speed
+            #     self.drive_cmd.drive.steering_angle = delta
+            #     self.drive_pub.publish(self.drive_cmd)
 
-            except KeyboardInterrupt:
-                self.drive_cmd.header.stamp = self.current_time
-                self.drive_cmd.header.frame_id = 'base_link'
-                self.drive_cmd.drive.speed = 0
-                self.drive_cmd.drive.steering_angle = 0
-                self.drive_pub.publish(self.drive_cmd)
+            # except KeyboardInterrupt:
+            #     self.drive_cmd.header.stamp = self.current_time
+            #     self.drive_cmd.header.frame_id = 'base_link'
+            #     self.drive_cmd.drive.speed = 0
+            #     self.drive_cmd.drive.steering_angle = 0
+            #     self.drive_pub.publish(self.drive_cmd)
 
             # Update States
             self.update_states()
