@@ -238,7 +238,7 @@ class LqrController(Node):
 
         # self.get_logger().info(f"Car pos: {self.x},{self.y}")
         # self.get_logger().info(f"Path data: {self.x_path[:5]},{self.y_path[:5]}")
-        # self.get_logger().info(f"Err Mag index: {error_mag1_index},{error_mag2_index}")
+        self.get_logger().info(f"Err Mag index: {error_mag1_index},{error_mag2_index}")
         self.get_logger().info(f"Point 1: {Px1},{Py1} \nPoint 2: {Px2},{Py2}")
         
         # create line extrapolations to determine cross-track error
@@ -247,8 +247,7 @@ class LqrController(Node):
         # path line
         delta_x = Px2 - Px1 + self.line_error_threshold
         delta_y = Py2 - Py1 + self.line_error_threshold
-        # theta_path = float(np.arctan2(delta_y, delta_x))
-        theta_path = np.arctan(np.tan(float(np.arctan2(delta_y, delta_x))))
+        theta_path = float(np.arctan2(delta_y, delta_x))
         path_slope = delta_y / delta_x
         path_intercept = Py1 - path_slope * Px1
         
