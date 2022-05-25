@@ -247,8 +247,8 @@ class LqrController(Node):
         # path line
         delta_x = Px2 - Px1 + self.line_error_threshold
         delta_y = Py2 - Py1 + self.line_error_threshold
-        theta_path = float(np.arctan2(delta_y, delta_x))
-        # if abs(theta_path - self.yaw)
+        # theta_path = float(np.arctan2(delta_y, delta_x))
+        theta_path = np.arctan(np.tan(float(np.arctan2(delta_y, delta_x))))
         path_slope = delta_y / delta_x
         path_intercept = Py1 - path_slope * Px1
         
