@@ -304,7 +304,7 @@ class LqrController(Node):
             self.theta_e_k += (2 * math.pi)
         else:
             'Nothing'
-        self.state_measurement[0][0] = e_cg * 100
+        self.state_measurement[0][0] = e_cg * 120
         self.state_measurement[1][0] = self.vy + self.vx * math.sin(self.theta_e_k)
         self.state_measurement[2][0] = self.theta_e_k
         self.state_measurement[3][0] = (self.theta_e_k - theta_e_km1) / self.Ts
