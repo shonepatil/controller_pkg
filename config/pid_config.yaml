@@ -1,12 +1,12 @@
 pid_node: 
   ros__parameters: 
-    Kp_steering : 2.0
+    Kp_steering : 4.0
     Ki_steering : 1.0E-3 
-    Kd_steering : 1.0E-3
+    Kd_steering : 1.0
     integral_max: 1.0E-1
     zero_speed  : 0.0
-    max_speed : 0.3
-    min_speed : 0.2 
+    max_speed : 1.0
+    min_speed : 0.9 
     heading_upper_error_threshold : 1.0 
     heading_lower_error_threshold : 0.10 
     long_upper_error_threshold : 3.0 
