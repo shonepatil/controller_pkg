@@ -2,7 +2,7 @@
 
 Given coordinates of a path to follow, this ROS package allows the car to follow the path using controlers (eg. PID and LQR).
 
-[![PID Controller Video](https://youtu.be/4MK3wESY66A)](https://youtu.be/4MK3wESY66A)
+![PID Controller GIF](./recordings/Robocar_Going_Around_Fast.gif)
 
 # Instalation
 
