@@ -1,6 +1,6 @@
 # ROS2 Controller Package for Self Driving Car
 
-Given coordinates of a path to follow, this ROS2 package allows the car to follow the path using controlers (eg. PID and LQR).
+Given coordinates of a path to follow, this ROS2 package allows the car to follow the path using controlers (eg. PID and LQR). [Here](https://docs.google.com/document/d/1p193sd0xH9MkXmNO3VeS7I8w-1QvZ5OEhzpqFabwr0k/edit?usp=sharing) is our report, and [here](https://docs.google.com/presentation/d/1H5FHX5CmrK70eJTGlJmzeryEGKBkP8fqUc0uEpG2vxo/edit?usp=sharing) is our presentation.
 
 ![PID Controller GIF](./recordings/Robocar_Going_Around_Fast.gif)
 
